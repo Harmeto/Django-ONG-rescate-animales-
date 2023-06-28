@@ -1,0 +1,161 @@
+.nav{
+    background-color: aquamarine;
+    color: #fff;
+}
+
+.nav img{
+    width: 100%;
+    height: 2.8em;
+}
+
+.nav a{
+    color: #fff;
+    font-weight: 900;
+}
+
+main{
+    background-color: aqua;
+}
+
+.perro{
+    margin: 0;
+}
+
+.perro img{
+    width: 100%;
+}
+
+.rr-ss{
+    height: 8em;
+    color: #fff;
+    font-weight: 900;
+}
+
+.rr-ss a{
+    margin-inline: 12px;
+}
+
+.rr-ss a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    text-align: center;
+    line-height: 40px;
+    margin: 0 5px;
+  }
+
+.content{
+    background-color: #fff;
+    padding: 2%;
+}
+
+.content img{
+    width: 15em;
+    height: 15em;
+}
+
+  @media (max-width: 767.98px) {
+    .d-flex.flex-column {
+      flex-direction: column !important;
+    }
+    .justify-content-end {
+      justify-content: flex-end !important;
+    }
+    .justify-content-start {
+      justify-content: flex-start !important;
+    }
+  }
+
+  h6{
+    color: gray;
+  }
+
+  footer{
+    height: 6em;
+    background-color: gray;
+  }
+
+
+  .parent-grid {
+    height: 60vh;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    grid-template-areas:
+      "asdjkl asdjkl div4 div4 div6 div6"
+      "asdjkl asdjkl div4 div4 div6 div6"
+      "div2 div2 div4 div4 div6 div6"
+      "div2 div2 div5 div5 div6 div6"
+      "div3 div3 div5 div5 div7 div7"
+      "div3 div3 div5 div5 div7 div7";
+  }
+
+  .parent-grid div{
+    background-size: 100% 100%;
+
+  }
+
+  .asdjkl { grid-area: asdjkl; background-image: url("../img/rescatados/Oso.jpg"); }
+  .div2 { grid-area: div2; background-image: url("../img/rescatados/Maya.jpg"); }
+  .div3 { grid-area: div3; background-image: url("../img/rescatados/Wifi.jpg"); }
+  .div4 { grid-area: div4; background-image: url("../img/rescatados/Chocolate.jpg"); }
+  .div5 { grid-area: div5;  background-image: url("../img/rescatados/Pexel.jpg"); }
+  .div6 { grid-area: div6;  background-image: url("../img/rescatados/Bigotes.jpg");}
+  .div7 { grid-area: div7; background-image: url("../img/rescatados/Luna.jpg");}
+
+
+
+  .carousel {
+    height: 600px;
+  }
+
+  .carousel img{
+    height: 598px;
+  }
+
+  .card{
+      box-shadow: black;
+  }
+
+  .card .animles{
+    width: 100%;
+    height: 50vh !important;
+  }
+
+    .galery{
+      width: 98%;
+      gap: 5px;
+      margin-left: 4px;
+    }
+
+    .galery h4{
+      color: black;
+      font-weight: 800;
+    }
+    
+    .galery .class-1-1, .class-1-2, .class-1-3{
+      height: 31.84vh !important;
+    }
+
+    .galery .class-2-1, .class-2-2{
+      height: 48.8vh !important;
+    } 
+
+    .galery .class-3-1{
+      height: 66.3vh !important;
+    }
+
+    .galery .class-3-2{
+      height: 30.8vh !important;
+    }
+   
+    .rescatado_card{
+      height: 50%;
+    }
+

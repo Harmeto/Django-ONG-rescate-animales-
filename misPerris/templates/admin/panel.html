@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/animales.css' %}">
+
+<main>
+    <h1 class="text-start mx-4">Administrar Animalitos</h1>
+    <section class="results-header">
+        <div class="mx-3 d-flex align-items-center">
+            <a class="btn btn-secondary mx-2" role="button" 
+                id="createButon"
+                data-bs-toggle="modal" 
+                data-bs-target="#createModal" 
+            >Agregar nuevo Animalito</a>
+            <a class="btn btn-secondary" role="button" href="/panel">Lista de Animalitos</a>
+        </div>
+        <div class="results-header__option">
+            <div class="option__button option--grid selected"><span></span><span></span><span></span><span></span><span>Grid</span></div>
+            <div class="option__button option--list"><span></span><span></span><span></span><span>Lista</span></div>
+        </div>
+    </section>
+
+    
+    <section class="results-section results--grid">
+        {% for animal in animales %}
+        <div class="profile">
+            <div class="profile__image"><img src="{{animal.imagen.url}}" alt="{{animal.nombre}}"/></div>
+            <div class="profile__info">
+              <h3>{{animal.nombre}}</h3>
+              <p class="profile__info__extra">{{animal.descripcion}}</p>
+            </div>
+            <div class="profile__stats">
+              <p class="profile__stats__title">Raza: </p>
+              <h5 class="profile__stats__info">{{animal.raza}}</h5>
+            </div>
+            <div class="profile__stats">
+                <p class="profile__stats__title">Estado</p>
+                <h5>{{animal.estado}}</h5>
+              </div>
+            <div class="profile__stats">
+              <p class="profile__stats__title">Tamaño</p>
+              <h5>{{animal.size}}</h5>
+            </div>
+            <div class="profile__stats">
+              <p class="profile__stats__title">Peso</p>
+              <h5 class="profile__stats__info">{{animal.peso}} kg</h5>
+            </div>
+            <div class="profile__cta">
+                <a class="button btn btn-success" id="editButton" data-bs-toggle="modal" data-bs-target="#editModal"
+                    data-animal-id="{{ animal.id }}" 
+                    data-animal-nombre="{{ animal.nombre }}" 
+                    data-animal-descripcion="{{animal.descripcion}}"
+                    data-animal-imagen="{{animal.imagen}}"
+                    data-animal-raza="{{animal.raza}}"
+                    data-animal-estado="{{animal.estado}}"
+                    data-animal-peso="{{animal.peso}}"
+                    data-animal-size="{{animal.size}}"
+                >
+                Editar
+                </a>
+                <a class="button btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal" data-animal-id="{{ animal.id }}" data-animal-nombre="{{ animal.nombre }}">Eliminar</a>
+            </div>
+          
+          </div>
+        {% endfor %}
+    </section>
+
+    <!-- Modal de advertencia -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar animal</h5>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro de eliminar al animal <span id="animalName"></span>?</p>
+                </div>
+                {% csrf_token %}
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn" >Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar animal</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formEdit">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Nombre del Animal</label>
+                            {% render_field form.nombre|attr:"nombre=animalNombre" class="form-control"  autocomplete="off" %}
+                        </div>
+                        <div class="mb-1">
+                            <label for="exampleInputEmail1" class="form-label">Imagen</label>
+                            {% render_field form.imagen class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="">imagen actual</label>
+                            <input type="text" disabled nombre="animalImagen" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Raza Predominante</label>
+                            {% render_field form.raza|attr:"nombre=animalRaza" class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Descripción</label>
+                            {% render_field form.descripcion|attr:"nombre=animalDescripcion" class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Estado</label>
+                            {% render_field form.estado|attr:"nombre=animalEstado" class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Tamaño</label>
+                            {% render_field form.size|attr:"nombre=animalSize" class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Peso (kg)</label>
+                            {% render_field form.peso|attr:"nombre=animalPeso" class="form-control" autocomplete="off" %}
+                        </div>
+                        {% csrf_token %}
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="confirmEditBtn" >Editar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">Crear animal</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formCreate">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Nombre del Animal</label>
+                            {% render_field form.nombre class="form-control"  autocomplete="off" %}
+                        </div>
+                        <div class="mb-1">
+                            <label for="exampleInputEmail1" class="form-label">Imagen</label>
+                            {% render_field form.imagen class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Raza Predominante</label>
+                            {% render_field form.raza class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Descripción</label>
+                            {% render_field form.descripcion class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Estado</label>
+                            {% render_field form.estado class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Tamaño</label>
+                            {% render_field form.size class="form-control" autocomplete="off" %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Peso(kg)</label>
+                            {% render_field form.peso class="form-control" autocomplete="off" %}
+                        </div>
+                        {% csrf_token %}
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="confirmCreateBtn" >Crear</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script>
+
+const deleteButton = document.querySelectorAll('#deleteButton');
+const editButton = document.querySelectorAll('#editButton');
+const confirmDeleteBtn = document.querySelector('#confirmDeleteBtn');
+const confirmEditBtn = document.querySelector('#confirmEditBtn');
+const confirmCreateBtn = document.querySelector('#confirmCreateBtn');
+const animalName = document.getElementById('animalName');
+
+const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+const formEdit = document.getElementById('formEdit');
+const imputNombre = document.getElementById('id_nombre');
+const createModal = document.getElementById('createModal');
+const formCreate = document.getElementById('formCreate');
+
+    
+let animal_id = '';
+let nombre_animal = '';
+let data = new FormData();
+
+deleteButton.forEach(element => {
+
+    element.addEventListener('click', (event) => {
+    const {animalId, animalNombre} = event.target.dataset;
+    animal_id = animalId;
+    animalName.innerHTML = "";
+    animalName.innerText = animalNombre;
+    });
+
+});
+
+
+ editButton.forEach(element => {
+    element.addEventListener('click', (event) => {
+        let { animalId, animalNombre, animalImagen, animalRaza, animalDescripcion, animalPeso, animalSize } = event.target.dataset;
+        
+        // Obtener referencia al formulario de edición
+        const formEdit = document.getElementById('formEdit');
+
+        // Recorrer las propiedades del objeto event.target.dataset
+        for (let campo in event.target.dataset) {
+            if (event.target.dataset.hasOwnProperty(campo)) {
+                // Obtener referencia al campo de entrada correspondiente
+                const input = formEdit.querySelector(`[nombre="${campo}"]`);
+                
+                if (input) {
+                    // Asignar el valor del campo de entrada
+                    input.value = event.target.dataset[campo];
+                }
+            }
+        }
+
+        animal_id = animalId;
+        console.log(animal_id)
+        nombre_animal = animalNombre;
+        
+ 
+        $('#editModal').on('hidden.bs.modal', function () {
+            // Restablecer los valores del formulario a los valores iniciales
+            console.log(animalId)
+            formEdit.reset();
+            animalId = ''
+            console.log(animalId)
+        });
+    });
+});
+
+confirmEditBtn.addEventListener('click', () => {
+    const postUrl = '/panel/editar/' + animal_id;
+    // Actualizar los datos en el objeto FormData
+        // Actualizar el campo 'nombre' con el valor del input 'imputNombre'
+    // ... Actualizar los demás campos según sea necesario
+    const formData = new FormData(formEdit);
+    // Realizar la solicitud POST
+    fetch(postUrl, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => {
+        // Manejar la respuesta de la solicitud
+        if (response.ok) {
+            // La solicitud fue exitosa
+            // Hacer algo en consecuencia
+            window.location.href = '/panel';
+        } else {
+            // La solicitud no fue exitosa
+            // Manejar el error en consecuencia
+            console.error('Error en la solicitud POST');
+        }
+    })
+    .catch(error => {
+        // Manejar el error de la solicitud
+        console.error('Error en la solicitud POST', error);
+    });
+});
+
+
+confirmDeleteBtn.addEventListener('click', ()=>{
+    let deleteUrl = '/panel/eliminar/' + animal_id;
+    fetch(deleteUrl, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(window.location.href = '/panel')
+})
+
+
+//apprearance
+$("input.variation").on("click", function() {
+	if ($(this).val() > 3) {
+		$("body").css("background", "#111");
+		$("footer").attr("class", "dark");
+	} else {
+		$("body").css("background", "#f9f9f9");
+		$("footer").attr("class", "");
+	}
+});
+
+// toggle list vs card view
+$(".option__button").on("click", function() {
+	$(".option__button").removeClass("selected");
+	$(this).addClass("selected");
+	if ($(this).hasClass("option--grid")) {
+		$(".results-section").attr("class", "results-section results--grid");
+	} else if ($(this).hasClass("option--list")) {
+		$(".results-section").attr("class", "results-section results--list");
+	}
+});
+
+
+createModal.addEventListener('hidden.bs.modal', () => {
+        formCreate.reset(); // Reinicia los campos del formulario
+    });
+
+    confirmCreateBtn.addEventListener('click', () => {
+        const formData = new FormData(formCreate);
+
+        // Realizar la solicitud POST
+        fetch('/panel/agregar', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => {
+            // Manejar la respuesta de la solicitud
+            if (response.ok) {
+                // La solicitud fue exitosa
+                // Hacer algo en consecuencia
+                window.location.href = '/panel';
+            } else {
+                // La solicitud no fue exitosa
+                // Manejar el error en consecuencia
+                console.error('Error en la solicitud POST');
+            }
+        })
+        .catch(error => {
+            // Manejar el error de la solicitud
+            console.error('Error en la solicitud POST', error);
+        });
+    });
+</script>
+
+{% endblock %}

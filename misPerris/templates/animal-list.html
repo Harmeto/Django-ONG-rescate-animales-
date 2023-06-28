@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/animales.css' %}">
+
+<main>
+    <section class="results-header">
+        <h2 class="mx-4 mt-2">Rescatados</h2>
+        <div class="results-header__option">
+            <div class="option__button option--grid selected"><span></span><span></span><span></span><span></span><span>Grid</span></div>
+            <div class="option__button option--list"><span></span><span></span><span></span><span>Lista</span></div>
+        </div>
+    </section>
+    <section class="results-section results--grid">
+        {% for animal in animales %}
+        <div class="profile">
+            <div class="profile__image"><img src="{{animal.imagen.url}}" alt="{{animal.nombre}}"/></div>
+            <div class="profile__info">
+              <h3>{{animal.nombre}}</h3>
+              <p class="profile__info__extra">{{animal.descripcion}}</p>
+            </div>
+            <div class="profile__stats">
+              <p class="profile__stats__title">Raza: </p>
+              <h5 class="profile__stats__info">{{animal.raza}}</h5>
+            </div>
+            <div class="profile__stats">
+              <p class="profile__stats__title">Tamaño</p>
+              <h5>{{animal.size}}</h5>
+            </div>
+            <div class="profile__stats">
+              <p class="profile__stats__title">Peso</p>
+              <h5 class="profile__stats__info">{{animal.peso}} Kg</h5>
+            </div>
+            <div class="profile__cta">
+                <a class="button btn btn-secondary {% if user.is_authenticated %} adopt {% else %} adoptButton {% endif %} " 
+                    role="button"
+                    data-animal-id="{{ animal.id }}" 
+                    data-animal-nombre="{{ animal.nombre }}" 
+                    data-animal-descripcion="{{animal.descripcion}}"
+                    data-animal-imagen="{{animal.imagen}}"
+                    data-animal-raza="{{animal.raza}}"
+                    data-animal-estado="{{animal.estado}}"
+                    data-animal-peso="{{animal.peso}}"
+                    data-animal-size="{{animal.size}}"
+                >
+                Adoptar
+                </a>
+            </div>
+          
+          </div>
+        {% endfor %}
+       
+        
+    </section>
+
+    
+
+    <!-- Modal de advertencia -->
+    <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warningModalLabel">Advertencia</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Para adoptar debes ingresar con tu cuenta</p>
+                </div>
+                {% csrf_token %}
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="modal-footer">
+                    <button role="button" class="btn btn-primary" id="acceder">Acceder</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="adoptModal" tabindex="-1" role="dialog" aria-labelledby="adoptModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adoptModalLabel">Solicitud de Adopcion</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Para adoptar a <span id="animal-name"></span> debes completar el siguiente formulario</p>
+                </div>
+                {% csrf_token %}
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="modal-footer">
+                    <button role="button" class="btn btn-primary" id="acceder">Aceptar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    $('#acceder').on('click', function(){
+        window.location.href = '/login';
+    })
+
+    $('.adoptButton').on('click', function(){
+        const { animalDescripcion, animalEstado, animalId, animalImagen, animalNombre, animalPeso, animalRaza, animalSize } = $(this).data();
+        $('#warningModal').modal('show');
+    });
+
+    $('.adopt').on('click', function(){
+        const { animalDescripcion, animalEstado, animalId, animalImagen, animalNombre, animalPeso, animalRaza, animalSize } = $(this).data();
+        $('#adoptModal').modal('show');
+        /* $('#animal-name').text(`${animalNombre}`); */
+        $('.modal-body').html(`Estamos trabajando para que puedas adoptar a nuestros animalitos`);
+    })
+
+    //apprearance
+    $("input.variation").on("click", function() {
+        if ($(this).val() > 3) {
+            $("body").css("background", "#111");
+            $("footer").attr("class", "dark");
+        } else {
+            $("body").css("background", "#f9f9f9");
+            $("footer").attr("class", "");
+        }
+    });
+
+    // toggle list vs card view
+    $(".option__button").on("click", function() {
+        $(".option__button").removeClass("selected");
+        $(this).addClass("selected");
+        if ($(this).hasClass("option--grid")) {
+            $(".results-section").attr("class", "results-section results--grid");
+        } else if ($(this).hasClass("option--list")) {
+            $(".results-section").attr("class", "results-section results--list");
+        }
+    });
+
+
+</script>
+
+{% endblock %}

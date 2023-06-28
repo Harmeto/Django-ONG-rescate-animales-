@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<h2 class="text-center">
+    {% if '/agregar' in request.path %} 
+        Registro de Animal 
+    {% elif '/editar' in request.path %} 
+        Editar Animal 
+    {% endif %} 
+</h2>
+ <form method="post" enctype="multipart/form-data" class="container flex-column my-4 justify-content-center">
+     {% csrf_token %}
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+  
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Nombre del Animal</label>
+            {% render_field form.nombre class="form-control" autocomplete="off" %}
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Imagen</label>
+            {% render_field form.imagen class="form-control" autocomplete="off" %}
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Raza Predominante</label>
+            {% render_field form.raza class="form-control" autocomplete="off" %}
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Descripción</label>
+            {% render_field form.descripcion class="form-control" autocomplete="off" %}
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Estado</label>
+            {% render_field form.estado class="form-control" autocomplete="off" %}
+        </div>
+
+        <div class="col-8">
+            <button type="submit" class="btn btn-primary mt-3 ">
+                {% if '/agregar' in request.path %} 
+                    Registrar
+                {% elif '/editar' in request.path %} 
+                    Editar  
+                {% endif %} 
+            </button>
+            <a role="button" href="/panel/" class="btn btn-primary mt-3 ">Cancelar</a>
+        </div>
+        
+</form>
+{% endblock %}

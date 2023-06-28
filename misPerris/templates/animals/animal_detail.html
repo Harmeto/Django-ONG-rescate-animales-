@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .animal-card {
+    display: flex;
+    
+    padding: 10px;
+    }
+
+    .animal-image img {
+        max-width: 400px;
+        height: auto;
+        margin-right: 10px;
+    }
+
+    .animal-details h3 {
+        margin-top: 0;
+    }
+
+    .animal-details p {
+        margin-bottom: 5px;
+    }
+
+</style>
+
+<main>
+    
+        <div class="container">
+            <h2>Detalles del Animal</h2>
+            <div class="animal-card">
+                <div class="animal-image">
+                    <img src="{{ animal.imagen.url }}" alt="Imagen del Animal">
+                </div>
+                <div class="animal-details">
+                    <h3>{{ animal.nombre }}</h3>
+                    <p><strong>Raza:</strong> {{ animal.raza }}</p>
+                    <p><strong>Descripción:</strong> {{ animal.descripcion }}</p>
+                    <p><strong>Estado:</strong> {{ animal.estado }}</p>
+                    <p><strong>Tamaño:</strong> {{ animal.size }}</p>
+                    <p><strong>Peso:</strong> {{ animal.peso }}</p>
+                </div>
+            </div>
+        </div>
+   
+</main>
+
+
+
+{% endblock %}

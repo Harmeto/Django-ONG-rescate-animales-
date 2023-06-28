@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <form method="post" class="container"  up-submit up-target="form" style="height: 60%;">
+        <h3>Formulario de Contacto</h3>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label mt-1 mb-0" for="name" >{{ form.name.label_tag }}</label>
+            {% render_field form.name class="form-control name" autocomplete="off"  %}
+
+            <label class="form-label mt-1 mb-0" for="rut">{{ form.rut.label_tag }}</label>
+            {% render_field form.rut class="form-control" autocomplete="off" %}
+
+            <label class="form-label mt-1 mb-0" for="date_of_birth">{{ form.date_of_birth.label_tag }}</label>
+            {% render_field form.date_of_birth class="form-control" autocomplete="off" %}
+
+            <label class="form-label mt-1 mb-0" for="email">{{ form.email.label_tag }}</label>
+            {% render_field form.email class="form-control" autocomplete="off" %}
+
+            <label class="form-label mt-1 mb-0" for="phone">{{ form.phone.label_tag }}</label>
+            {% render_field form.phone class="form-control" autocomplete="off" %}
+
+            <label class="form-label mt-1 mb-0" for="region">{{ form.region.label_tag }}</label>
+            {% render_field form.region class="form-control"  up-validate="#id_city" id="region" %}
+        
+            <label class="form-label mt-1 mb-0" for="id_city">{{ form.city.label_tag }}</label>
+            {% render_field form.city class="form-control" autocomplete="off" %}
+
+            <label class="form-label mt-1 mb-0" for="housing_type">{{ form.housing_type.label_tag }}</label>
+            {% render_field form.housing_type class="form-control" autocomplete="off" %} 
+            
+            <label class="form-label mt-1 mb-0" for="message">{{ form.message.label_tag }}</label>
+            {% render_field form.message class="form-control" autocomplete="off" %}  
+           
+            <label class="form-label mt-1 mb-0" for="terms">{{ form.terms.label_tag }}</label>
+            {% render_field form.terms class="form-check-input" autocomplete="off" %}
+
+        </div>
+        <input type="submit" value="Enviar" class="btn btn-primary mb-3">
+    </form>
+
+{% endblock %}
