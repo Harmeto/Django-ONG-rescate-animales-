@@ -29,14 +29,6 @@ def admin_view(request):
             return render(request, 'users/acceso_denegado.html')
     else:
         return render(request, 'users/acceso_denegado.html')
-    
-def deleteUser(request): 
-    user = CustomUser.objects.get(id=4)
-    user.email = 'email@falso.com'  # Obtén el registro a eliminar según su ID u otros criterios
-    user.delete()  # Elimina el registro de la base de datos
-    user.save()  # Guarda los cambios en la base de datos (si hay otros cambios pendientes)
-
-    return HttpResponse('borrado')
 
 def about_view(request):
     return render(request, 'about-us.html')

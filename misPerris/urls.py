@@ -16,7 +16,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('login/', views.login_view, name="login"),
     path('register/', views.register_view, name="register"),
-    path('borrar/', views.deleteUser, name='delete'),
     #path('acceso-denegado/', views.admin_view, name="check"),
 
     #animal

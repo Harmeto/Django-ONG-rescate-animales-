@@ -2,7 +2,7 @@ from django import forms
 from dynamic_forms import DynamicField, DynamicFormMixin
 from django.core.validators import EmailValidator
 from django.contrib.auth.forms import UserCreationForm
-from .models import Contact, Region, Ciudad, Animal, CustomUser
+from .models import Region, Ciudad, Animal, CustomUser
 import re
 
 class CustomUserCreationForm(DynamicFormMixin, UserCreationForm):
