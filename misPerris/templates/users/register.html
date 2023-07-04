@@ -2,40 +2,36 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
-    <div class="d-flex flex-column mx-4 my-4">
-        <form method="post" class="needs-validation mx-4 col-8 align-self-center" novalidate>
-            {% csrf_token %}
-            {% if error_message %}
-                <p>{{ error_message }}</p>
+<div class="d-flex flex-column mx-4 my-4">
+    <form method="post" class="needs-validation mx-4 col-8 align-self-center" novalidate>
+        {% csrf_token %}
+        {% if error_message %}
+        <p>{{ error_message }}</p>
+        {% endif %}
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
+            {% render_field form.username class="form-control" autocomplete="off" %}
+            <div id="emailHelp" class="form-text">150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_
+            </div>
+            {% if form.username.errors %}
+            <div>
+                <ul>
+                    {% for error in form.username.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
             {% endif %}
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
-                {% render_field form.username class="form-control" autocomplete="off" %}
-                <div id="emailHelp" class="form-text">150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_ </div>
-                {% if form.username.errors %}
-                <div >
+        </div>
+        <div class="d-flex justify-content-between">
+            <div class="mb-3 col-5">
+                <label for="exampleInputPassword1" class="form-label">Nombre</label>
+                {% render_field form.first_name class="form-control" autocomplete="off" %}
+                <div id="emailHelp" class="form-text">Ingrese su Nombre</div>
+                {% if form.first_name.errors %}
+                <div>
                     <ul>
-                        {% for error in form.username.errors %}
-                        <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                {% render_field form.password1 class="form-control" autocomplete="off"  %}
-                <div id="emailHelp" class="form-text">
-                    <ul>
-                        <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
-                        <li>Su contraseña debe contener al menos 8 caracteres.</li>
-                        <li>Su contraseña no puede ser completamente numérica.</li>
-                    </ul>
-                </div>
-                {% if form.password1.errors %}
-                <div >
-                    <ul>
-                        {% for error in form.password1.errors %}
+                        {% for error in form.first_name.errors %}
                         <li>{{ error }}</li>
                         {% endfor %}
                     </ul>
@@ -43,14 +39,45 @@
                 {% endif %}
             </div>
 
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                {% render_field form.password2 class="form-control" autocomplete="off"  %}
-                <div id="emailHelp" class="form-text">Para verificar, introduzca la misma contraseña anterior</div>
-                {% if form.password2.errors %}
-                <div >
+            <div class="mb-3 col-5">
+                <label for="exampleInputPassword1" class="form-label">Apellido</label>
+                {% render_field form.last_name class="form-control" autocomplete="off" %}
+                <div id="emailHelp" class="form-text">Ingrese su Apellido</div>
+                {% if form.last_name.errors %}
+                <div>
                     <ul>
-                        {% for error in form.password2.errors %}
+                        {% for error in form.last_name.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Correo Electronico</label>
+            {% render_field form.email class="form-control" autocomplete="off" %}
+            <div id="emailHelp" class="form-text">Ingrese Correo Electronico ( formato correo@servidor.com ) </div>
+            {% if form.email.errors %}
+            <div>
+                <ul>
+                    {% for error in form.email.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <div class="mb-3 col-5">
+                <label for="exampleInputPassword1" class="form-label">Regiones</label>
+                {% render_field form.region class="form-control" up-validate="#id_city" id="region" %}
+                <div id="emailHelp" class="form-text">Regiones</div>
+                {% if form.region.errors %}
+                <div>
+                    <ul>
+                        {% for error in form.region.errors %}
                         <li>{{ error }}</li>
                         {% endfor %}
                     </ul>
@@ -58,8 +85,60 @@
                 {% endif %}
             </div>
 
-            <button type="submit" class="btn btn-primary mt-2">Registrar</button>
-            <a href="/" class="btn btn-primary mt-2">Cancelar</a>
-        </form>
-    </div>
+            <div class="mb-3 col-5">
+                <label for="exampleInputPassword1" class="form-label">Ciudades</label>
+                {% render_field form.city class="form-control" autocomplete="off" %}
+                <div id="emailHelp" class="form-text">Para seleccionar, seleccione una region</div>
+                {% if form.city.errors %}
+                <div>
+                    <ul>
+                        {% for error in form.city.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            {% render_field form.password1 class="form-control" autocomplete="off" %}
+            <div id="emailHelp" class="form-text">
+                <ul>
+                    <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
+                    <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                    <li>Su contraseña no puede ser completamente numérica.</li>
+                </ul>
+            </div>
+            {% if form.password1.errors %}
+            <div>
+                <ul>
+                    {% for error in form.password1.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            {% render_field form.password2 class="form-control" autocomplete="off" %}
+            <div id="emailHelp" class="form-text">Para verificar, introduzca la misma contraseña anterior</div>
+            {% if form.password2.errors %}
+            <div>
+                <ul>
+                    {% for error in form.password2.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Registrar</button>
+        <a href="/" class="btn btn-primary mt-2">Cancelar</a>
+    </form>
+</div>
 {% endblock %}

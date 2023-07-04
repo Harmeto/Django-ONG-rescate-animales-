@@ -49,6 +49,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR / 'misPerris/media')
 
 LOGIN_URL = '/login/'
 
+AUTH_USER_MODEL = 'misPerris.CustomUser'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,7 +91,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

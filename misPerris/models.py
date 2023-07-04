@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 
-User = get_user_model()
-
+#User = get_user_model()
 class Region(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -15,6 +15,22 @@ class Ciudad(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, blank=True)
+    city = models.ForeignKey(Ciudad, on_delete=models.SET_NULL, null=True, blank=True)
+
+    # Aquí puedes agregar campos adicionales según tus necesidades
+
+    USERNAME_FIELD = 'username'  # Campo único para autenticación
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'region', 'city']  # Campos requeridos en el formulario de creación de usuario
+
+    def __str__(self):
+        return self.username
 
 class Contact(models.Model):
     name = models.CharField(max_length=200)

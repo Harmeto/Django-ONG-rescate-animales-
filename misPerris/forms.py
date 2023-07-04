@@ -1,8 +1,26 @@
 from django import forms
 from dynamic_forms import DynamicField, DynamicFormMixin
 from django.core.validators import EmailValidator
-from .models import Contact, Region, Ciudad, Animal
+from django.contrib.auth.forms import UserCreationForm
+from .models import Contact, Region, Ciudad, Animal, CustomUser
 import re
+
+class CustomUserCreationForm(DynamicFormMixin, UserCreationForm):
+    def city_choices(form):
+            region = form['region'].value()
+            return Ciudad.objects.filter(region=region)
+    
+    def initial_city(form):
+        region = form['region'].value()
+        return Ciudad.objects.filter(region=region)
+
+    region = forms.ModelChoiceField(queryset=Region.objects.all(), initial=None, required=True, label='Region', empty_label='Regiones')
+    city = DynamicField( forms.ModelChoiceField, queryset=city_choices, required=True, label='Ciudad', empty_label='Seleccione una region')
+
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ('username', 'email', 'first_name', 'last_name', 'region', 'city')
+
 
 
 class ContactForm(DynamicFormMixin, forms.Form):

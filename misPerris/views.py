@@ -11,8 +11,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 #models - forms
-from .models import Region, Ciudad, Contact, Animal
-from .forms import ContactForm, AnimalForm
+from .models import Region, Ciudad, Contact, Animal, CustomUser
+from .forms import ContactForm, AnimalForm, CustomUserCreationForm
 import json
 # Create your views here.
 
@@ -30,6 +30,13 @@ def admin_view(request):
     else:
         return render(request, 'users/acceso_denegado.html')
     
+def deleteUser(request): 
+    user = CustomUser.objects.get(id=4)
+    user.email = 'email@falso.com'  # Obtén el registro a eliminar según su ID u otros criterios
+    user.delete()  # Elimina el registro de la base de datos
+    user.save()  # Guarda los cambios en la base de datos (si hay otros cambios pendientes)
+
+    return HttpResponse('borrado')
 
 def about_view(request):
     return render(request, 'about-us.html')
@@ -54,11 +61,15 @@ def login_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        #form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -67,7 +78,8 @@ def register_view(request):
                 else:
                     return redirect('index')
     else:
-        form = UserCreationForm()
+        #form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
 
 def logout_view(request):
