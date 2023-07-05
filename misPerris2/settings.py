@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%qg0&4belaf8-sr4sl55$hcv2(y&_vh!h$cbjp+1ihp^!!%*mr'
+SECRET_KEY = '****************'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,12 +48,12 @@ INSTALLED_APPS = [
 
 # Configuración del backend de correo electrónico
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = '*****'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'bad.thg@gmail.com'  # Tu dirección de correo electrónico de Gmail
-EMAIL_HOST_PASSWORD = 'otxwfaaireihhwpl'  # La contraseña de tu cuenta de Gmail
+EMAIL_HOST_USER = '***********'  # Tu dirección de correo electrónico de Gmail
+EMAIL_HOST_PASSWORD = '************'  # La contraseña de tu cuenta de Gmail
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'misPerris@gmail.com'  # Dirección de correo electrónico predeterminada para los mensajes salientes
+DEFAULT_FROM_EMAIL = '*************'  # Dirección de correo electrónico predeterminada para los mensajes salientes
 
 
 MEDIA_URL = 'media/'
