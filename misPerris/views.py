@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 #models - forms
-from .models import Region, Ciudad, Contact, Animal, CustomUser
+from .models import Region, Ciudad, Contact, Animal, CustomUser, Solicitud
 from .forms import ContactForm, AnimalForm, CustomUserCreationForm
 import json
 
@@ -244,6 +244,15 @@ def rescatados_view(request):
     animales = Animal.objects.filter(estado='disponible')
     context = {'animales': animales}
     return render(request, 'animal-list.html', context)
+
+def make_solicitud(request, animal_id):
+    animal = get_object_or_404(Animal, id=animal_id)
+
+    if request.method == 'POST':
+        usuario = request.user
+        solicitud = Solicitud.objects.create(usuario=usuario, animal=animal)
+        return redirect('index')
+    
 
 def animal_detail(request, animal_id):
     animal = Animal.objects.get(id=animal_id)

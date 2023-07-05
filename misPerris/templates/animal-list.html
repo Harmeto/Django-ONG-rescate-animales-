@@ -87,8 +87,13 @@
                 {% csrf_token %}
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                 <div class="modal-footer">
-                    <button role="button" class="button btn btn-primary" id="acceder">Aceptar</button>
-                    <button type="button" class="button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                   
+                    <a role="button" class="button btn btn-primary adoptarBtn" id="solicitar">Aceptar</a>
+                    <button type="button" class="button btn btn-secondary cancelarBtn" data-bs-dismiss="modal">Cancelar</button>
+                    
+                    <button role="button" class="button btn btn-primary" data-bs-dismiss="modal" id="btnCerrar" style="display: none;">Cerrar</button>
+                    
+                    
                 </div>
             </div>
         </div>
@@ -97,20 +102,6 @@
 
 <script>
 
-    let email = '{{ request.user.email }}';
-    let username = '{{ request.user.username }}';
-    let firstName = '{{ request.user.first_name }}';
-    let lastName = '{{ request.user.last_name }}';
-    let region = '{{ request.user.region }}';
-    let city = '{{ request.user.city }}';
-    
-    console.log(email);
-    console.log(username);
-    console.log(firstName);
-    console.log(lastName);
-    console.log(region);
-    console.log(city);
-
     $('#acceder').on('click', function(){
         window.location.href = '/login';
     })
@@ -118,13 +109,40 @@
     $('.adoptButton').on('click', function(){
         const { animalDescripcion, animalEstado, animalId, animalImagen, animalNombre, animalPeso, animalRaza, animalSize } = $(this).data();
         $('#warningModal').modal('show');
+        
     });
 
     $('.adopt').on('click', function(){
         const { animalDescripcion, animalEstado, animalId, animalImagen, animalNombre, animalPeso, animalRaza, animalSize } = $(this).data();
         $('#adoptModal').modal('show');
+        $('.modal-body').html(`Estas seguro que deseas adoptar a  ${animalNombre}`);
         /* $('#animal-name').text(`${animalNombre}`); */
-        $('.modal-body').html(`Estamos trabajando para que puedas adoptar a nuestros animalitos ${user.username}`);
+        $('#solicitar').on('click', function(){
+            fetch(`/solicitar/${animalId}`, {
+            method: 'POST',
+            credentials: 'same-origin', // Incluye las cookies en la solicitud si es necesario
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' // Agrega el token CSRF al encabezado
+            }
+            })
+            .then(response => {
+                if (response.ok) {
+                $('.modal-body').html(`Solicitud Enviada, un administrador se contactara contigo en breve`);
+              
+                $('.cancelarBtn').hide();
+                $('#solicitar').hide();
+                $('#btnCerrar').css('display', 'block');
+                // Realiza las acciones necesarias después de una solicitud exitosa
+                } else {
+                // La solicitud no se realizó con éxito
+                console.error('Error al enviar la solicitud');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+            });
+        })
+        
     })
 
     //apprearance

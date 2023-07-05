@@ -21,6 +21,7 @@ urlpatterns = [
     path('reset-password/<str:uid>/<str:token>/', views.password_reset, name='password_reset'),     
     #animal
     path('animal-detail/<int:animal_id>', views.animal_detail, name="animal-detail"),
+    path('solicitar/<int:animal_id>', views.make_solicitud, name="solicitar"),
 
     #users admin
     path("panel/", views.admin_view, name="panel"),

@@ -29,7 +29,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-
+    
 class Contact(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
@@ -72,3 +72,17 @@ class Animal(models.Model):
     def __str__(self):
         return self.nombre
     
+class Solicitud(models.Model):
+    ESTADO_CHOICES = (
+        ('Pendiente', 'Pendiente'),
+        ('Aprobada', 'Aprobada'),
+        ('Rechazada', 'Rechazada'),
+    )
+    
+    id = models.AutoField(primary_key=True)
+    animal = models.ForeignKey(Animal, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes')
+    usuario = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='user_solicitudes')
+    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='Pendiente')
+
+    def __str__(self):
+        return f"Solicitud #{self.id} - {self.usuario}"
