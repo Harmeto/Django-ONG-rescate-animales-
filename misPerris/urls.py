@@ -17,7 +17,8 @@ urlpatterns = [
     path('login/', views.login_view, name="login"),
     path('register/', views.register_view, name="register"),
     #path('acceso-denegado/', views.admin_view, name="check"),
-
+    path('reset-password/', views.password_reset_request, name='password_reset_request'),
+    path('reset-password/<str:uid>/<str:token>/', views.password_reset, name='password_reset'),     
     #animal
     path('animal-detail/<int:animal_id>', views.animal_detail, name="animal-detail"),
 

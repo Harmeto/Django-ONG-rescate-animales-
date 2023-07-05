@@ -44,6 +44,18 @@ INSTALLED_APPS = [
     'misPerris.media',
 ]
 
+# settings.py
+
+# Configuración del backend de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'bad.thg@gmail.com'  # Tu dirección de correo electrónico de Gmail
+EMAIL_HOST_PASSWORD = 'otxwfaaireihhwpl'  # La contraseña de tu cuenta de Gmail
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'misPerris@gmail.com'  # Dirección de correo electrónico predeterminada para los mensajes salientes
+
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR / 'misPerris/media')
 

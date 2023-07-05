@@ -4,6 +4,9 @@ from django.http import HttpResponse
 #manipulacion de archivos
 import os
 
+#expresiones regulares
+import re
+
 #login - logout - admin
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.utils.decorators import method_decorator
@@ -14,7 +17,92 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import Region, Ciudad, Contact, Animal, CustomUser
 from .forms import ContactForm, AnimalForm, CustomUserCreationForm
 import json
-# Create your views here.
+
+
+#pasword reset 
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMessage
+from django.shortcuts import render
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str 
+from django.template.loader import get_template
+from django.template import Context
+from .utils import TemplateEmail
+
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+
+
+def password_reset_request(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            user = None
+
+        if user is not None:
+            
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+
+       
+            current_site = get_current_site(request)
+            reset_link = f"{current_site}/reset-password/{uid}/{token}"
+
+           
+            email_context = {
+                'user': user,
+                'reset_link': reset_link
+            }
+    
+            template = TemplateEmail(
+                to=email,
+                subject='Restablecimiento de contraseña',
+                template='reset_password_email',
+                context=email_context
+            )
+
+            template.fail_silently = False
+            template.send()
+
+            return render(request, 'password_reset/password_reset_success.html', {'success': True})
+        else:
+            return render(request, 'password_reset/password_reset_request.html', {'error': True, 'message': "Correo ingresado no existe, intente de nuevo"})
+
+    return render(request, 'password_reset/password_reset_request.html')
+
+
+def password_reset(request, uid, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uid))
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm_password')
+
+            if password == confirm_password:
+                if not re.search(r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=]).*$', password):
+                    return render(request, 'password_reset/password_reset.html', {'error': True, 'message': 'La contraseña no cumple los requisitos de seguridad.'})
+                # Establecer la nueva contraseña para el usuario
+                user.set_password(password)
+                user.save()
+
+                return render(request, 'password_reset/password_reset_success.html', {'message':'Su contraseña se ha reestablecido satisfactoriamente.'})
+            else:
+                return render(request, 'password_reset/password_reset.html', {'error': True, 'message': 'Las contraseñas deben coincidir.'})
+
+        return render(request, 'password_reset/password_reset.html')
+    else:
+        return render(request, 'password_reset/password_reset_invalid.html')
 
 #vista admin ( list animal )
 @login_required

@@ -2,26 +2,31 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
- <div class="d-flex flex-column mx-4 my-4 justify-content-center">
+<div class="d-flex flex-column mx-4 my-4 justify-content-center">
 
-    <form method="post" class="mx-4 col-8 align-self-center">
-     {% csrf_token %}
-        {% if error_message %}
-            <p>{{ error_message }}</p>
-        {% endif %}
+  <form method="post" class="mx-4 col-8 align-self-center">
+    {% csrf_token %}
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+    {% endif %}
 
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
-            {% render_field form.username class="form-control" autocomplete="off"  %}
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-            {% render_field form.password class="form-control" autocomplete="off"  %}
-          </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
+      {% render_field form.username class="form-control" autocomplete="off" %}
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+      {% render_field form.password class="form-control" autocomplete="off" %}
+    </div>
+    <div>
+      <p class="text-secondary mt-1">¿No tienes cuenta? Registrate</p> 
+      <span><a href="/reset-password" class="text-secondary mt-1">¿ Olvidaste tu
+        contraseña ? </a></span>
+    </div>
+    
 
-        <p class="text-secondary mt-1">¿No tienes cuenta? Registrate</p>
-        <button type="submit" class="btn btn-primary mt-2">Login</button>
-        <a role="button" href="/register" class="btn btn-primary mt-2">Registro</a>
-    </form>
- </div>
+    <button type="submit" class="btn btn-primary mt-2">Login</button>
+    <a role="button" href="/register" class="btn btn-primary mt-2">Registro</a>
+  </form>
+</div>
 {% endblock %}

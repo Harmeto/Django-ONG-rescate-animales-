@@ -68,8 +68,8 @@
                 {% csrf_token %}
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                 <div class="modal-footer">
-                    <button role="button" class="btn btn-primary" id="acceder">Acceder</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button role="button" class="button btn btn-primary" id="acceder">Acceder</button>
+                    <button type="button" class="button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -87,8 +87,8 @@
                 {% csrf_token %}
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                 <div class="modal-footer">
-                    <button role="button" class="btn btn-primary" id="acceder">Aceptar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button role="button" class="button btn btn-primary" id="acceder">Aceptar</button>
+                    <button type="button" class="button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -96,6 +96,20 @@
 </main>
 
 <script>
+
+    let email = '{{ request.user.email }}';
+    let username = '{{ request.user.username }}';
+    let firstName = '{{ request.user.first_name }}';
+    let lastName = '{{ request.user.last_name }}';
+    let region = '{{ request.user.region }}';
+    let city = '{{ request.user.city }}';
+    
+    console.log(email);
+    console.log(username);
+    console.log(firstName);
+    console.log(lastName);
+    console.log(region);
+    console.log(city);
 
     $('#acceder').on('click', function(){
         window.location.href = '/login';
@@ -110,7 +124,7 @@
         const { animalDescripcion, animalEstado, animalId, animalImagen, animalNombre, animalPeso, animalRaza, animalSize } = $(this).data();
         $('#adoptModal').modal('show');
         /* $('#animal-name').text(`${animalNombre}`); */
-        $('.modal-body').html(`Estamos trabajando para que puedas adoptar a nuestros animalitos`);
+        $('.modal-body').html(`Estamos trabajando para que puedas adoptar a nuestros animalitos ${user.username}`);
     })
 
     //apprearance
